@@ -59,6 +59,8 @@ const ProductsPage: React.FC = () => {
   // Handle Delete
   const handleDelete = async (id: string) => {
     try {
+      const userConfirmed = confirm(`Apakah kamu yakin ingin menghapus product ini?`);
+      if (!userConfirmed) return;
       await api.delete(`/products/${id}`);
       fetchProducts();
     } catch (error) {
