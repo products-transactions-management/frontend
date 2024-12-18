@@ -18,6 +18,7 @@ interface Product {
 
 const TransactionsPage: React.FC = () => {
   const [transactions, setTransactions] = useState<Transaction[]>([]);
+  const [sortedTransactions, setSortedTransactions] = useState<Transaction[]>([]);
   const [products, setProducts] = useState<Product[]>([]);
   const [form, setForm] = useState({
     product_id: "",
@@ -44,9 +45,19 @@ const TransactionsPage: React.FC = () => {
         };
       });
       setTransactions(transactionsWithNames);
+      setSortedTransactions(transactionsWithNames);
     } catch (error) {
       console.error("Failed to fetch transactions", error);
     }
+  };
+
+  // Sort transactions based on quantity
+  const handleSortChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    const order = e.target.value;
+    const sorted = [...transactions].sort((a, b) =>
+        order === "max" ? b.quantity - a.quantity : a.quantity - b.quantity
+    );
+    setSortedTransactions(sorted);
   };
 
   // Fetch products
@@ -182,18 +193,30 @@ const TransactionsPage: React.FC = () => {
           </select>
         </div>
         <div className="flex items-center gap-2">
+          <label>Sort by Quantity:</label>
+          <select
+              name="sort_by_date"
+              onChange={handleSortChange}
+              className="p-2 border rounded"
+          >
+            <option value="">Default</option>
+            <option value="min">Lowest to Highest</option>
+            <option value="max">Highest to Lowest</option>
+          </select>
+        </div>
+        <div className="flex items-center gap-2">
           <label>Filter Date Range:</label>
           <input
-            type="date"
-            name="date_start"
-            onChange={handleFilterChange}
-            className="p-2 border rounded"
+              type="date"
+              name="date_start"
+              onChange={handleFilterChange}
+              className="p-2 border rounded"
           />
           <input
-            type="date"
-            name="date_end"
-            onChange={handleFilterChange}
-            className="p-2 border rounded"
+              type="date"
+              name="date_end"
+              onChange={handleFilterChange}
+              className="p-2 border rounded"
           />
         </div>
         <div className="flex items-center gap-2">
@@ -226,7 +249,7 @@ const TransactionsPage: React.FC = () => {
           </tr>
         </thead>
         <tbody>
-          {transactions.map((transaction) => (
+          {sortedTransactions.map((transaction) => (
             <tr key={transaction.id} className="hover:bg-gray-100 text-center">
               <td className="border p-2 text-start">{transaction.product_name}</td>
               <td className="border p-2">{transaction.quantity}</td>
