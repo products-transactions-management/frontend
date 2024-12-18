@@ -6,12 +6,19 @@ import { AxiosError } from "axios";
 interface Transaction {
   id: string;
   product_id: string;
+  product_name?: string;
   quantity: number;
   transaction_date: string;
 }
 
+interface Product {
+    id: string;
+    name: string;
+}
+
 const TransactionsPage: React.FC = () => {
   const [transactions, setTransactions] = useState<Transaction[]>([]);
+  const [products, setProducts] = useState<Product[]>([]);
   const [form, setForm] = useState({
     product_id: "",
     quantity: "",
@@ -29,18 +36,39 @@ const TransactionsPage: React.FC = () => {
   const fetchTransactions = async () => {
     try {
       const response = await api.get("/transactions", { params: filters });
-      setTransactions(response.data);
+      const transactionsWithNames = response.data.map((transaction: Transaction) => {
+        const product = products.find((p) => p.id === transaction.product_id);
+        return {
+          ...transaction,
+          product_name: product ? product.name : "Unknown",
+        };
+      });
+      setTransactions(transactionsWithNames);
     } catch (error) {
       console.error("Failed to fetch transactions", error);
     }
   };
 
+  // Fetch products
+  const fetchProducts = async () => {
+    try {
+      const response = await api.get("/products");
+      setProducts(response.data);
+    } catch (error) {
+      console.error("Failed to fetch products", error);
+    }
+  };
+
   useEffect(() => {
-    fetchTransactions();
-  }, [filters]);
+    fetchProducts();
+  }, []);
+
+  useEffect(() => {
+    if (products.length > 0) fetchTransactions();
+  }, [products, filters]);
 
   // Handle form input
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
     setForm({ ...form, [name]: value });
   };
@@ -70,7 +98,7 @@ const TransactionsPage: React.FC = () => {
             alert("Failed to create transaction\nProduct out of stock");
             return;
         }
-        
+
       alert("Failed to create transaction\nInternal Server Error");
     }
   };
@@ -97,20 +125,26 @@ const TransactionsPage: React.FC = () => {
 
   return (
     <div className="p-8">
-      <h1 className="text-2xl font-bold mb-4 text-orange">Transaction Page</h1>
+      <h1 className="text-2xl font-bold mb-8 text-orange">Transactions Page</h1>
 
       {/* Form Create Transaction */}
       <form onSubmit={handleSubmit} className="mb-6">
+        <h2 className="text-lg font-semibold mb-4 text-[#0d0d0d]">Create New Transaction:</h2>
         <div className="grid grid-cols-3 gap-4">
-          <input
-            type="text"
+        <select
             name="product_id"
             value={form.product_id}
             onChange={handleChange}
-            placeholder="Product ID"
             className="p-2 border rounded"
             required
-          />
+          >
+            <option value="">Select Product</option>
+            {products.map((product) => (
+              <option key={product.id} value={product.id}>
+                {product.name}
+              </option>
+            ))}
+          </select>
           <input
             type="number"
             name="quantity"
@@ -185,7 +219,7 @@ const TransactionsPage: React.FC = () => {
       <table className="w-full border-collapse border">
         <thead>
           <tr className="bg-orange text-white">
-            <th className="border p-2">Product ID</th>
+            <th className="border p-2">Product</th>
             <th className="border p-2">Quantity</th>
             <th className="border p-2">Transaction Date</th>
             <th className="border p-2">Actions</th>
@@ -193,20 +227,20 @@ const TransactionsPage: React.FC = () => {
         </thead>
         <tbody>
           {transactions.map((transaction) => (
-            <tr key={transaction.id} className="hover:bg-gray-100">
-              <td className="border p-2">{transaction.product_id}</td>
+            <tr key={transaction.id} className="hover:bg-gray-100 text-center">
+              <td className="border p-2 text-start">{transaction.product_name}</td>
               <td className="border p-2">{transaction.quantity}</td>
               <td className="border p-2">{new Date(transaction.transaction_date).toLocaleDateString()}</td>
               <td className="border p-2">
                 <Link
                   to={`/transactions/edit/${transaction.id}`}
-                  className="text-blue-500 mr-2"
+                  className="text-blue-500 mr-2 hover:underline"
                 >
                   Edit
                 </Link>
                 <button
                   onClick={() => handleDelete(transaction.id)}
-                  className="text-red-500"
+                  className="text-red-500 hover:underline"
                 >
                   Delete
                 </button>

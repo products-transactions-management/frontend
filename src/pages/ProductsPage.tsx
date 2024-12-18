@@ -76,9 +76,10 @@ const ProductsPage: React.FC = () => {
 
   return (
     <div className="p-8">
-      <h1 className="text-2xl font-bold mb-4 text-orange">Product Page</h1>
+      <h1 className="text-2xl font-bold mb-8 text-orange">Products Page</h1>
       {/* Form Create Product */}
       <form onSubmit={handleSubmit} className="mb-6">
+        <h2 className="text-lg font-semibold mb-4 text-[#0d0d0d]">Create New Product:</h2>
         <div className="grid grid-cols-3 gap-4">
           <input
             type="text"
@@ -142,8 +143,8 @@ const ProductsPage: React.FC = () => {
         </thead>
         <tbody>
           {products.map((product) => (
-            <tr key={product.id} className="hover:bg-gray-100">
-              <td className="border p-2">{product.name}</td>
+            <tr key={product.id} className="hover:bg-gray-100 text-center">
+              <td className="border p-2 text-start">{product.name}</td>
               <td className="border p-2">{product.type}</td>
               <td className="border p-2">{product.stock}</td>
               <td className="border p-2">
