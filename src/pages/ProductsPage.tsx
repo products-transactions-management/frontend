@@ -142,7 +142,14 @@ const ProductsPage: React.FC = () => {
           </tr>
         </thead>
         <tbody>
-          {products.map((product) => (
+          {
+            products.length === 0 ? (
+                <tr>
+                  <td colSpan={4} className="text-center p-2">No products found</td>
+                </tr>
+                ) :
+
+            products.map((product) => (
             <tr key={product.id} className="hover:bg-gray-100 text-center">
               <td className="border p-2 text-start">{product.name}</td>
               <td className="border p-2">{product.type}</td>

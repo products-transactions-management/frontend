@@ -55,7 +55,12 @@ Project ini adalah aplikasi **Dashboard Products dan Transactions Management** b
    ```
 
 3. **Konfigurasi Backend URL di .env**
-   Buat file `.env` di root proyek dan tambahkan konfigurasi berikut:
+   Copy file `.env.example` ke `.env` di root project
+   ```bash
+   cp .env.example .env
+   ```
+
+   Kemudian, tambahkan konfigurasi berikut di `.env`:
    ```plaintext
    VITE_API_BASE_URL=http://localhost:3000/api
    ```

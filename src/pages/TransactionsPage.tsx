@@ -249,7 +249,12 @@ const TransactionsPage: React.FC = () => {
           </tr>
         </thead>
         <tbody>
-          {sortedTransactions.map((transaction) => (
+          { sortedTransactions.length === 0 ? (
+              <tr>
+                <td colSpan={4} className="text-center p-2">No transactions found</td>
+              </tr>
+              ) :
+            sortedTransactions.map((transaction) => (
             <tr key={transaction.id} className="hover:bg-gray-100 text-center">
               <td className="border p-2 text-start">{transaction.product_name}</td>
               <td className="border p-2">{transaction.quantity}</td>
