@@ -1,6 +1,6 @@
 # Dashboard Management Frontend
 
-## **Deskripsi Proyek**
+## **Deskripsi Project**
 Project ini adalah aplikasi **Dashboard Products dan Transactions Management** berbasis **Vite** dengan **React TypeScript**. Aplikasi ini memungkinkan pengguna untuk mengelola data produk dan transaksi dengan fitur CRUD (Create, Read, Update, Delete), serta menyertakan fitur sorting, filtering, dan searching.
 
 ---
@@ -36,7 +36,7 @@ Project ini adalah aplikasi **Dashboard Products dan Transactions Management** b
 
 ---
 
-## **Instalasi dan Menjalankan Proyek**
+## **Instalasi dan Menjalankan Project**
 
 ### **Prasyarat**
 - Node.js ≥ 18.x
@@ -67,25 +67,19 @@ Project ini adalah aplikasi **Dashboard Products dan Transactions Management** b
 
    Pastikan URL di atas sesuai dengan endpoint backend Anda.
 
-4. **Update Axios Konfigurasi**
-   Edit `src/services/api.ts` agar menggunakan URL dari file `.env`:
-   ```typescript
-   import axios from "axios";
-
-   const api = axios.create({
-     baseURL: import.meta.env.VITE_API_BASE_URL,
-   });
-
-   export default api;
-   ```
-
-5. **Jalankan Proyek**
+4. **Jalankan Project**
    ```bash
    npm run dev
    ```
 
-6. **Akses Aplikasi**
+5. **Akses Aplikasi**
    - Buka [http://localhost:5173](http://localhost:5173) di browser.
+
+---
+
+## **Keterbatasan UI/UX**
+- **Responsiveness**: Saat ini, UI belum sepenuhnya responsive untuk layar kecil atau perangkat mobile.
+- **Rekomendasi**: Gunakan layar **laptop** atau **desktop** dengan resolusi minimal **1280x720** untuk UI/UX terbaik.
 
 ---
 
@@ -107,19 +101,13 @@ Aplikasi ini bergantung pada **API Backend** yang memiliki endpoint berikut:
   - `DELETE /transactions/:id` - Hapus data transaksi.  
 ---
 
-## **Keterbatasan UI/UX**
-- **Responsiveness**: Saat ini, UI belum sepenuhnya responsive untuk layar kecil atau perangkat mobile.
-- **Rekomendasi**: Gunakan layar **laptop** atau **desktop** dengan resolusi minimal **1280x720** untuk UI/UX terbaik.
-
----
-
-## **Kontributor**
-- **Mohammad Lukman Aqib** - [LinkedIn](https://www.linkedin.com/in/mazzlookman304/) | [GitHub](https://github.com/mazzlookman)
-
----
-
 ## **Catatan Tambahan**
 Pastikan backend sudah berjalan sebelum menjalankan aplikasi frontend. Backend API URL dapat disesuaikan di file `.env`.
+
+---
+
+## **Kontak**
+- **Mohammad Lukman Aqib** - [LinkedIn](https://www.linkedin.com/in/mazzlookman304/) | [GitHub](https://github.com/mazzlookman)
 
 ---
 
